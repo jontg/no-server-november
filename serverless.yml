@@ -39,4 +39,3 @@ functions:
       - http:
           method: get
           path: lorem_ipsum
-          integration: lambda
