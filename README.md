@@ -14,7 +14,21 @@ well-formatted HTML page, with custom text generated on every request.  We use [
 the text, and [he] to encode it for HTML.  You can see the generator in action
 [here](https://no-server-november.ulfhedinn.net/lorem_ipsum).
 
-
 [stranger ipsum]: https://github.com/robertcoopercode/stranger-ipsum/blob/master/src/generator.js
 [wizipsum]: https://github.com/wizbii/wizipsum
 [he]: https://github.com/mathiasbynens/he
+
+# Dad Bot
+
+Lets twitter up a bot, shall we?  We create a new bot, whose name is [@NDadbot], which is using the
+Twitter API to broadcast delightfully terrible jokes from the [dadbot api].  Fortunately for us,
+there already exists a [dadbot client] in nodejs, as does the [twitter api], so this primarily
+involved creating a new twitter account, promoting that account to a developer by applying, and
+provisioning tokens.  We're using [credstash] from my private account to manage tokens, because we
+are responsible adults.
+
+[@NDadbot]: https://twitter.com/NDadbot
+[credstash]: https://github.com/fugue/credstash
+[dadbot api]: https://icanhazdadjoke.com/api
+[dadbot client]: https://github.com/Julien-Broyard/dadjokes-wrapper
+[twitter api]: https://github.com/desmondmorris/node-twitter

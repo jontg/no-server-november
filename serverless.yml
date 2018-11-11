@@ -7,7 +7,7 @@ provider:
   cfLogs: true
   logRetentionInDays: 90
   region: ${self:custom.region.${self:custom.stage}}
-  stage: dev
+  stage: prod
   versionFunctions: false
 
 package:
@@ -19,23 +19,27 @@ plugins:
 custom:
   stage: ${opt:stage, self:provider.stage}
   region:
-    # TODO dev should not be in us-west-2, but we need to configure credstash's table somehow...
-    dev: us-west-2
     prod: us-west-2
   webpack:
     includeModules: true
     forceExclude:
       - aws-sdk
   domain:
-    dev: no-server-november.ulfhedinn.net/dev
     prod: no-server-november.ulfhedinn.net
 
 # resources: ${file(resources.yml)}
 
 functions:
+# =--= Lorem Ipsum =-------------------------------------------------------------------------------=
   lorem_ipsum:
     handler: functions/lorem_ipsum.handler
     events:
       - http:
           method: get
           path: lorem_ipsum
+
+# =--= Dad Jokes Twitter =-------------------------------------------------------------------------=
+  dadbot:
+    handler: functions/dadbot.handler
+    events:
+      - schedule: rate(2 hours)
