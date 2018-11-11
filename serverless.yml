@@ -9,6 +9,19 @@ provider:
   region: ${self:custom.region.${self:custom.stage}}
   stage: prod
   versionFunctions: false
+  iamRoleStatements: # permissions for all of your functions can be set here
+    - Effect: Allow
+      Action: # Gives permission to DynamoDB tables in a specific region
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:*"
+    - Effect: Allow
+      Action: # Credstash KMS key, for decrypting secrets (alias/credstash)
+        - kms:Decrypt
+        - kms:GenerateDataKey
+      Resource: "arn:aws:kms:${self:provider.region}:*:key/b7754a99-7b1a-4b65-adda-7b4f8416836b"
 
 package:
   individually: true
