@@ -1,0 +1,42 @@
+service: no-server-november
+provider:
+  name: aws
+  deploymentBucket:
+    name: com.ulfhedinn.${self:custom.region.${self:custom.stage}}.deploys
+  runtime: nodejs6.10
+  cfLogs: true
+  logRetentionInDays: 90
+  region: ${self:custom.region.${self:custom.stage}}
+  stage: dev
+  versionFunctions: false
+
+package:
+  individually: true
+
+plugins:
+  - serverless-webpack
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region:
+    # TODO dev should not be in us-west-2, but we need to configure credstash's table somehow...
+    dev: us-west-2
+    prod: us-west-2
+  webpack:
+    includeModules: true
+    forceExclude:
+      - aws-sdk
+  domain:
+    dev: no-server-november.ulfhedinn.net/dev
+    prod: no-server-november.ulfhedinn.net
+
+# resources: ${file(resources.yml)}
+
+functions:
+  lorem_ipsum:
+    handler: functions/lorem_ipsum.handler
+    events:
+      - http:
+          method: get
+          path: lorem_ipsum
+          integration: lambda
