@@ -20,6 +20,7 @@
     "bluebird": "^3.5.2",
     "dadjokes-wrapper": "^0.1.4",
     "he": "^1.2.0",
+    "icanhazdadjoke-client": "0.0.2",
     "nodecredstash": "^2.0.2",
     "request": "^2.88.0",
     "serverless": "^1.32.0",

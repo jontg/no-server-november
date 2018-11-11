@@ -30,5 +30,7 @@ are responsible adults.
 [@NDadbot]: https://twitter.com/NDadbot
 [credstash]: https://github.com/fugue/credstash
 [dadbot api]: https://icanhazdadjoke.com/api
-[dadbot client]: https://github.com/Julien-Broyard/dadjokes-wrapper
+[dadbot client]: https://github.com/jmptr/node-icanhazdadjoke-client
 [twitter api]: https://github.com/desmondmorris/node-twitter
+
+# Linting Integrity

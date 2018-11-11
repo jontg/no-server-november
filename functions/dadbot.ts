@@ -1,6 +1,6 @@
 import * as T from 'twitter';
 import * as Credstash from 'nodecredstash/js';
-import * as DadJokes from 'dadjokes-wrapper';
+import { ICanHazDadJokeClient } from 'icanhazdadjoke-client';
 
 const credstash = new Credstash({ awsOpts: { region: process.env.AWS_DEFAULT_REGION } });
 
@@ -17,10 +17,10 @@ export const handler = async (event, context, cb) => {
     access_token_secret,
   });
 
-  const dadjokes_client = new DadJokes();
+  const dadjokes_client = new ICanHazDadJokeClient();
 
   try {
-    const joke = await dadjokes_client.randomJoke();
+    const { joke } = await dadjokes_client.getRandomJoke();
 
     let twitter_response = await new Promise((resolve, reject) =>
       twitter_client.post('statuses/update', {
