@@ -25,6 +25,8 @@ provider:
 
 package:
   individually: true
+  exclude:
+    - github-check.private-key.pem.ts
 
 plugins:
   - serverless-webpack
@@ -56,3 +58,14 @@ functions:
     handler: functions/dadbot.handler
     events:
       - schedule: rate(2 hours)
+
+# =--= GitHub Check =------------------------------------------------------------------------------=
+  github_check:
+    handler: functions/github_check.handler
+    events:
+      - http:
+          method: post
+          path: github_check
+    package:
+      include:
+        - github-check.private-key.pem.ts
