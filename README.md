@@ -41,7 +41,8 @@ to work from — so let us create a check on that (this?).  We've set up a gith
 piece is complete.  We'll be using the official octokit client to talk to github, and we've created
 a [new github application](https://github.com/settings/applications/932381) to authenticate against
 this.  This was alleviated using [github-app], which made the whole github app song-and-dance more
-palletable.
+palletable.  We use a simple regex to match JIRA tickets, specifically `/[A-Z]{2,}-[0-9]+:/g`, and
+you can see the check in action [here](https://github.com/jontg/no-server-november/pull/1).
 
 [official octokit]: https://github.com/octokit/rest.js
 [github-app]: https://github.com/probot/github-app
