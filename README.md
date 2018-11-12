@@ -33,4 +33,16 @@ are responsible adults.
 [dadbot client]: https://github.com/jmptr/node-icanhazdadjoke-client
 [twitter api]: https://github.com/desmondmorris/node-twitter
 
-# Linting Integrity
+# GitHub Check
+
+Alright, so we are tasked with creating a github check.  Mercifully, we already *have* a github repo
+to work from — so let us create a check on that (this?).  We've set up a github webhook to point to
+`https://no-server-november.ulfhedinn.net/github_check`, and you'll see checks appear when this
+piece is complete.  We'll be using the official octokit client to talk to github, and we've created
+a [new github application](https://github.com/settings/applications/932381) to authenticate against
+this.  This was alleviated using [github-app], which made the whole github app song-and-dance more
+palletable.
+
+[official octokit]: https://github.com/octokit/rest.js
+[github-app]: https://github.com/probot/github-app
+
