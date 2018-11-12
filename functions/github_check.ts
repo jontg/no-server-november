@@ -5,15 +5,20 @@ import * as createApp from 'github-app';
 
 const credstash = new Credstash({ awsOpts: { region: process.env.AWS_DEFAULT_REGION } });
 
+const github_app_id = "20599";
 const jira_check = /[A-Z]{2,}-[0-9]+:/g;
 
 export const handler = async (event, context, cb) => {
+  const app = createApp({
+    id: github_app_id,
+    cert: Buffer.from(github_private_key),
+  });
+
   const payload = JSON.parse(event.body);
 
   const { action } = payload;
   if (action !== 'requested' ) return cb(null, { statusCode: 204 });
 
-  const github_app_id = "20599";
   const {
     check_suite: {
       head_sha,
@@ -25,11 +30,6 @@ export const handler = async (event, context, cb) => {
       owner: { login: owner },
     },
   } = payload;
-
-  const app = createApp({
-    id: github_app_id,
-    cert: Buffer.from(github_private_key),
-  });
 
   const integration = await app.asInstallation(github_installation_id);
 
@@ -55,6 +55,7 @@ export const handler = async (event, context, cb) => {
     });
 
   } else {
+
     await integration.checks.update({
       check_run_id, owner, repo,
       status: 'completed',

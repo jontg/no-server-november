@@ -47,3 +47,9 @@ you can see the check in action [here](https://github.com/jontg/no-server-novemb
 [official octokit]: https://github.com/octokit/rest.js
 [github-app]: https://github.com/probot/github-app
 
+# Cat Meme
+
+A brutally simple website using the giphy API.  We're using the [giphy-api] tool to ease the burden
+of querying giphy, and of course credstash for the API token.
+
+[giphy-api]: https://github.com/austinkelleher/giphy-api
