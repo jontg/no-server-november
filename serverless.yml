@@ -69,3 +69,11 @@ functions:
     package:
       include:
         - github-check.private-key.pem.ts
+
+# =--= Cat Memes =---------------------------------------------------------------------------------=
+  cat_meme:
+    handler: functions/cat_meme.handler
+    events:
+      - http:
+          method: get
+          path: cat_meme
