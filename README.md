@@ -53,3 +53,21 @@ A brutally simple website using the giphy API.  We're using the [giphy-api] tool
 of querying giphy, and of course credstash for the API token.
 
 [giphy-api]: https://github.com/austinkelleher/giphy-api
+
+# One Direction Facts
+
+okay so if we want to talk Boy Bands, why couldn't it be N'Sync?  Oh well, so we're gonna scrape
+[some facts off the internet], use vim to make this less painful:
+* `:v/[0-9]\+)/d` (deletes all lines not starting like `3)`)
+* `:%s/"/\\"/g` (turn every `"` into `\"`, so this does not mess up JSON later)
+* `:%s/^[0-9]\+) \(.*\)$/  "\1",/g` (turn every line into a JSON-like string)
+* Add `[` to the beginning of the file, remove the final trailing `,` and add `]` to the end of the
+  file.
+The final file should look similar to this [cat facts] JSON payload.  Then we follow along with the
+[example serverless app], register the app as a simple skill, and voila.  Notably, the Alexa Skill
+setup took longer than expected (the setup instructions changed!).
+
+
+[some facts off the internet]: https://planetradio.co.uk/hits-radio/entertainment/music/101-one-direction-facts/
+[cat facts]: https://gist.github.com/tonkku107/c079131c11a8f761a136a4ed305a0d9d
+[example serverless app]: https://github.com/serverless/examples/blob/master/aws-node-alexa-skill/

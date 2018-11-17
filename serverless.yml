@@ -77,3 +77,9 @@ functions:
       - http:
           method: get
           path: cat_meme
+
+# =--= One Direction =-----------------------------------------------------------------------------=
+  one_direction:
+    handler: functions/one_direction.handler
+    events:
+      - alexaSkill: amzn1.ask.skill.343bb68b-abc5-48e7-8507-4d7fee38c6f8
