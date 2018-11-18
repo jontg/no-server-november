@@ -88,9 +88,13 @@ functions:
   image_classifier:
     handler: functions/imagebot.handler
     events:
-      - http: # Tell the bot to register itself for web-hooks
-          method: patch
-          path: imagebot
+      # The following events are only available to me, `serverless invoke local` tyvm
+      # - http: # Tell the bot to register itself for web-hooks
+      #     method: patch
+      #     path: imagebot
+      # - http: # Tell the bot to register itself for web-hooks
+      #     method: delete
+      #     path: imagebot
       - http: # CRC Challenge/Response to enable new web-hooks
           method: get
           path: imagebot

@@ -86,6 +86,12 @@ In order to kick off the process, we manually set up the subscription with a `PA
 (so we can lazily avoid figuring out how to `curl`).  Notably, this took a *hell* of a long time to
 get right.
 
+Useful scripts here:
+```bash
+serverless invoke local -f image_classifier -d '{"httpMethod": "PATCH", "body": "{\"appId\": \"<APP_ID>\"}"}'
+serverless invoke local -f image_classifier -d '{"httpMethod": "DELETE", "body": "{\"appId\": \"<APP_ID>\", \"id\": \"<ID>\"}"}'
+```
+
 [@ServerImage]: https://twitter.com/ServerImage
 [Activity API]: https://developer.twitter.com/en/docs/accounts-and-users/subscribe-account-activity/guides/getting-started-with-webhooks
 [another codebase]: https://itnext.io/serverless-twitter-bot-with-google-cloud-35d370676f7
