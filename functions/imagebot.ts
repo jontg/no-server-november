@@ -18,7 +18,6 @@ function verifyTwitterSignature(event, payload, consumer_secret) {
 
 
 export const handler = async (event, context, cb) => {
-  console.log('Received Event', event);
 
   const consumer_secret = await credstash.getSecret({ name: 'TWITTER_IMAGEBOT_CONSUMER_SECRET' });
   const consumer_key = await credstash.getSecret({ name: 'TWITTER_IMAGEBOT_CONSUMER_KEY' });
@@ -46,33 +45,32 @@ export const handler = async (event, context, cb) => {
     }
 
     try {
-      let result = await new Promise((resolve, reject) =>
-        // Specify a full URL so that we don't try adding .json to the end...
-        twitter_client.post('https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json?url=' +
-            'https%3A%2F%2Fno-server-november.ulfhedinn.net%2Fimagebot',
+      let result = {};
+      // let result = await new Promise((resolve, reject) =>
+      //   // Specify a full URL so that we don't try adding .json to the end...
+      //   twitter_client.post('https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json?url=' +
+      //       'https%3A%2F%2Fno-server-november.ulfhedinn.net%2Fimagebot',
+      //     (error, payload, response) => {
+      //       if (error) {
+      //         reject(error);
+      //       } else {
+      //         console.log('Payload', payload);
+      //         resolve(payload);
+      //       }
+      //     }
+      //   )
+      // );
+
+      console.log('Result', result);
+
+      let subscribe_response = await new Promise((resolve, reject) =>
+        twitter_client.post('account_activity/all/dev/subscriptions',
           (error, payload, response) => {
-            if (error) {
-              reject(error);
-            } else {
-              console.log('Payload', payload);
-              resolve(payload);
-            }
+            if (error) reject(error);
+            resolve(payload);
           }
         )
       );
-
-      let subscribe_response = await new Promise((resolve, reject) => request.post({
-        oauth: {
-          consumer_key,
-          consumer_secret,
-          token: access_token_key,
-          token_secret: access_token_secret,
-        },
-        url: `https://api.twitter.com/1.1/account_activity/all/dev/subscriptions.json`
-      }, (err, data) => {
-        if (err) reject(err);
-        else resolve(data);
-      }));
 
       return cb(null, {
         statusCode: 200,
@@ -139,7 +137,7 @@ export const handler = async (event, context, cb) => {
         )
       );
     } catch (e) {
-      return cb(e);
+      console.log('Unable to celebrate registering a web hook!', e);
     }
 
     return cb(null, {
@@ -154,9 +152,15 @@ export const handler = async (event, context, cb) => {
 // =--------------------------------------------------------------------------=
 
   } else if (event.httpMethod === 'POST') {
-    try {
-      verifyTwitterSignature(event, event.body, consumer_secret);
+    let body = JSON.parse(event.body);
 
+    if (body.direct_message_events) {
+      body.direct_message_events.forEach(message => {
+        console.log('Message', message);
+      });
+    }
+
+    try {
       return cb(null, {
         statusCode: 200,
       });
@@ -164,6 +168,10 @@ export const handler = async (event, context, cb) => {
       return cb(e);
     }
   }
+
+// =--------------------------------------------------------------------------=
+// =--= DEFAULT =-------------------------------------------------------------=
+// =--------------------------------------------------------------------------=
 
   return cb(null, {
     statusCode: 200,

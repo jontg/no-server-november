@@ -76,7 +76,8 @@ setup took longer than expected (the setup instructions changed!).
 Follow the same steps as above; this time the bot is named [@ServerImage].  This time however, we
 need to respond to direct messages — that means we're going to need to set up some webhooks using
 the [Activity API].  I set up an Account Activity API Sandbox, and added my new Image Classifier app
-to a dev environment there.
+to a dev environment there.  Also, don't forget to change the permissions of the app to include
+read, write *and* direct messages.  Do this before creating access tokens...
 
 In order to register a webhook, we first need to implement a GET end-point to prove to Twitter that
 this endpoint is owned by this application; we borrow heavily from [another codebase] for their CRC
@@ -92,6 +93,18 @@ serverless invoke local -f image_classifier -d '{"httpMethod": "PATCH", "body": 
 serverless invoke local -f image_classifier -d '{"httpMethod": "DELETE", "body": "{\"appId\": \"<APP_ID>\", \"id\": \"<ID>\"}"}'
 ```
 
+And in the nodejs console...
+```nodejs
+request.get({ oauth: { token, token_secret, consumer_key, consumer_secret }, url: "https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json" }, console.log);
+```
+
 [@ServerImage]: https://twitter.com/ServerImage
 [Activity API]: https://developer.twitter.com/en/docs/accounts-and-users/subscribe-account-activity/guides/getting-started-with-webhooks
 [another codebase]: https://itnext.io/serverless-twitter-bot-with-google-cloud-35d370676f7
+
+```bash
+Payload { id: '1064008442954706944',
+  url: 'https://no-server-november.ulfhedinn.net/imagebot',
+  valid: true,
+  created_timestamp: '2018-11-18 04:12:36 +0000' }
+```
