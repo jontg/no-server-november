@@ -83,3 +83,17 @@ functions:
     handler: functions/one_direction.handler
     events:
       - alexaSkill: amzn1.ask.skill.343bb68b-abc5-48e7-8507-4d7fee38c6f8
+
+# =--= Image Classifier =--------------------------------------------------------------------------=
+  image_classifier:
+    handler: functions/imagebot.handler
+    events:
+      - http: # Tell the bot to register itself for web-hooks
+          method: patch
+          path: imagebot
+      - http: # CRC Challenge/Response to enable new web-hooks
+          method: get
+          path: imagebot
+      - http: # Primary twitter event entrypoint
+          method: post
+          path: imagebot

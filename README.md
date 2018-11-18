@@ -67,7 +67,25 @@ The final file should look similar to this [cat facts] JSON payload.  Then we fo
 [example serverless app], register the app as a simple skill, and voila.  Notably, the Alexa Skill
 setup took longer than expected (the setup instructions changed!).
 
-
 [some facts off the internet]: https://planetradio.co.uk/hits-radio/entertainment/music/101-one-direction-facts/
 [cat facts]: https://gist.github.com/tonkku107/c079131c11a8f761a136a4ed305a0d9d
 [example serverless app]: https://github.com/serverless/examples/blob/master/aws-node-alexa-skill/
+
+# Image Classifier Bot
+
+Follow the same steps as above; this time the bot is named [@ServerImage].  This time however, we
+need to respond to direct messages — that means we're going to need to set up some webhooks using
+the [Activity API].  I set up an Account Activity API Sandbox, and added my new Image Classifier app
+to a dev environment there.
+
+In order to register a webhook, we first need to implement a GET end-point to prove to Twitter that
+this endpoint is owned by this application; we borrow heavily from [another codebase] for their CRC
+implementation for that.
+
+In order to kick off the process, we manually set up the subscription with a `PATCH` call to the bot
+(so we can lazily avoid figuring out how to `curl`).  Notably, this took a *hell* of a long time to
+get right.
+
+[@ServerImage]: https://twitter.com/ServerImage
+[Activity API]: https://developer.twitter.com/en/docs/accounts-and-users/subscribe-account-activity/guides/getting-started-with-webhooks
+[another codebase]: https://itnext.io/serverless-twitter-bot-with-google-cloud-35d370676f7
