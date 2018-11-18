@@ -154,9 +154,18 @@ export const handler = async (event, context, cb) => {
   } else if (event.httpMethod === 'POST') {
     let body = JSON.parse(event.body);
 
+    console.log('Received event', event);
+
     if (body.direct_message_events) {
-      body.direct_message_events.forEach(message => {
-        console.log('Message', message);
+      body.direct_message_events
+      .filter(message => message.type === "message_create")
+      .filter(message => message.message_create.message_data.attachment !== null)
+      .filter(message => message.message_create.message_data.attachment.type === 'media')
+      .forEach(message => {
+        console.log('Message',
+          message.message_create.message_data.text,
+          message.message_create.message_data.attachment
+        );
       });
     }
 

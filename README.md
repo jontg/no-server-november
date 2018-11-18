@@ -81,11 +81,14 @@ read, write *and* direct messages.  Do this before creating access tokens...
 
 In order to register a webhook, we first need to implement a GET end-point to prove to Twitter that
 this endpoint is owned by this application; we borrow heavily from [another codebase] for their CRC
-implementation for that.
+implementation for that.  Next time, most of the registration crap should probably be handled
+through [twurl]
 
 In order to kick off the process, we manually set up the subscription with a `PATCH` call to the bot
 (so we can lazily avoid figuring out how to `curl`).  Notably, this took a *hell* of a long time to
 get right.
+
+For the love of... ok, we're only now getting to the actual meat of this problem.
 
 Useful scripts here:
 ```bash
@@ -101,10 +104,119 @@ request.get({ oauth: { token, token_secret, consumer_key, consumer_secret }, url
 [@ServerImage]: https://twitter.com/ServerImage
 [Activity API]: https://developer.twitter.com/en/docs/accounts-and-users/subscribe-account-activity/guides/getting-started-with-webhooks
 [another codebase]: https://itnext.io/serverless-twitter-bot-with-google-cloud-35d370676f7
+[twurl]: https://github.com/twitter/twurl
 
 ```bash
 Payload { id: '1064008442954706944',
   url: 'https://no-server-november.ulfhedinn.net/imagebot',
   valid: true,
   created_timestamp: '2018-11-18 04:12:36 +0000' }
+```
+
+```json
+{
+  "for_user_id": "1063941448792297473",
+  "direct_message_events": [
+    {
+      "type": "message_create",
+      "id": "1064023106421841924",
+      "created_timestamp": "1542517851821",
+      "message_create": {
+        "target": {
+          "recipient_id": "1063941448792297473"
+        },
+        "sender_id": "6424252",
+        "message_data": {
+          "text": "Not my best work!!! https:\\/\\/t.co\\/G3hzHqcM0t",
+          "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "user_mentions": [],
+            "urls": [
+              {
+                "url": "https:\\/\\/t.co\\/G3hzHqcM0t",
+                "expanded_url": "https:\\/\\/twitter.com\\/messages\\/media\\/1064023106421841924",
+                "display_url": "pic.twitter.com\\/G3hzHqcM0t",
+                "indices": [
+                  20,
+                  43
+                ]
+              }
+            ]
+          },
+          "attachment": {
+            "type": "media",
+            "media": {
+              "id": 1064023093419499500,
+              "id_str": "1064023093419499520",
+              "indices": [
+                20,
+                43
+              ],
+              "media_url": "https:\\/\\/ton.twitter.com\\/1.1\\/ton\\/data\\/dm\\/1064023106421841924\\/1064023093419499520\\/9maLWreO.jpg",
+              "media_url_https": "https:\\/\\/ton.twitter.com\\/1.1\\/ton\\/data\\/dm\\/1064023106421841924\\/1064023093419499520\\/9maLWreO.jpg",
+              "url": "https:\\/\\/t.co\\/G3hzHqcM0t",
+              "display_url": "pic.twitter.com\\/G3hzHqcM0t",
+              "expanded_url": "https:\\/\\/twitter.com\\/messages\\/media\\/1064023106421841924",
+              "type": "photo",
+              "sizes": {
+                "small": {
+                  "w": 680,
+                  "h": 454,
+                  "resize": "fit"
+                },
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "large": {
+                  "w": 2048,
+                  "h": 1368,
+                  "resize": "fit"
+                },
+                "medium": {
+                  "w": 1200,
+                  "h": 801,
+                  "resize": "fit"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "users": {
+    "6424252": {
+      "id": "6424252",
+      "created_timestamp": "1180471045000",
+      "name": "J\\u00f3n T\\u00f3mas Gr\\u00e9tarsson",
+      "screen_name": "jontomas",
+      "location": "Redwood City, CA",
+      "description": "@relateiq, @salesforceiq, @progressly, now @boxhq !",
+      "url": "https:\\/\\/t.co\\/JM280NVeSI",
+      "protected": false,
+      "verified": false,
+      "followers_count": 214,
+      "friends_count": 299,
+      "statuses_count": 3885,
+      "profile_image_url": "http:\\/\\/pbs.twimg.com\\/profile_images\\/1641280753\\/image_normal.jpg",
+      "profile_image_url_https": "https:\\/\\/pbs.twimg.com\\/profile_images\\/1641280753\\/image_normal.jpg"
+    },
+    "1063941448792297473": {
+      "id": "1063941448792297473",
+      "created_timestamp": "1542498383250",
+      "name": "no-server-november-image-classifier",
+      "screen_name": "ServerImage",
+      "protected": false,
+      "verified": false,
+      "followers_count": 1,
+      "friends_count": 1,
+      "statuses_count": 1,
+      "profile_image_url": "http:\\/\\/abs.twimg.com\\/sticky\\/default_profile_images\\/default_profile_normal.png",
+      "profile_image_url_https": "https:\\/\\/abs.twimg.com\\/sticky\\/default_profile_images\\/default_profile_normal.png"
+    }
+  }
+}
 ```
