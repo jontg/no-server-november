@@ -18,6 +18,10 @@ provider:
         - dynamodb:GetItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:*"
     - Effect: Allow
+      Action:
+        - rekognition:DetectLabels
+      Resource: "*"
+    - Effect: Allow
       Action: # Credstash KMS key, for decrypting secrets (alias/credstash)
         - kms:Decrypt
         - kms:GenerateDataKey
@@ -86,6 +90,7 @@ functions:
 
 # =--= Image Classifier =--------------------------------------------------------------------------=
   image_classifier:
+    timeout: 900
     handler: functions/imagebot.handler
     events:
       # The following events are only available to me, `serverless invoke local` tyvm
