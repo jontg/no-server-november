@@ -106,3 +106,10 @@ functions:
       - http: # Primary twitter event entrypoint
           method: post
           path: imagebot
+
+# =--= Twilio Integration =------------------------------------------------------------------------=
+  twilio:
+    handler: functions/twilio.handler
+    events:
+      - cron(0 16 ? ? ? ?)
+
