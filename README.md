@@ -67,7 +67,54 @@ The final file should look similar to this [cat facts] JSON payload.  Then we fo
 [example serverless app], register the app as a simple skill, and voila.  Notably, the Alexa Skill
 setup took longer than expected (the setup instructions changed!).
 
-
 [some facts off the internet]: https://planetradio.co.uk/hits-radio/entertainment/music/101-one-direction-facts/
 [cat facts]: https://gist.github.com/tonkku107/c079131c11a8f761a136a4ed305a0d9d
 [example serverless app]: https://github.com/serverless/examples/blob/master/aws-node-alexa-skill/
+
+# Image Classifier Bot
+
+Follow the same steps as above; this time the bot is named [@ServerImage].  This time however, we
+need to respond to direct messages — that means we're going to need to set up some webhooks using
+the [Activity API].  I set up an Account Activity API Sandbox, and added my new Image Classifier app
+to a dev environment there.  Also, don't forget to change the permissions of the app to include
+read, write *and* direct messages.  Do this before creating access tokens...
+
+In order to register a webhook, we first need to implement a GET end-point to prove to Twitter that
+this endpoint is owned by this application; we borrow heavily from [another codebase] for their CRC
+implementation for that.  Next time, most of the registration crap should probably be handled
+through [twurl]
+
+In order to kick off the process, we manually set up the subscription with a `PATCH` call to the bot
+(so we can lazily avoid figuring out how to `curl`).  Notably, this took a *hell* of a long time to
+get right.
+
+For the love of... ok, we're only now getting to the actual meat of this problem.  It's garbage
+issues like [this crap] that makes the Twitter API such a hassle to deal with.  Also, the
+direct_messages event API just doesn't work with the [node-twitter] package (and a bunch of the
+other end-points), so we end up using the regular `request` package for like half of these requests.
+
+Useful scripts here:
+```bash
+serverless invoke local -f image_classifier -d '{"httpMethod": "PATCH", "body": "{\"appId\": \"<APP_ID>\"}"}'
+serverless invoke local -f image_classifier -d '{"httpMethod": "DELETE", "body": "{\"appId\": \"<APP_ID>\", \"id\": \"<ID>\"}"}'
+```
+
+And in the nodejs console...
+```nodejs
+request.get({ oauth: { token, token_secret, consumer_key, consumer_secret }, url: "https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json" }, console.log);
+```
+
+[@ServerImage]: https://twitter.com/ServerImage
+[Activity API]: https://developer.twitter.com/en/docs/accounts-and-users/subscribe-account-activity/guides/getting-started-with-webhooks
+[another codebase]: https://itnext.io/serverless-twitter-bot-with-google-cloud-35d370676f7
+[twurl]: https://github.com/twitter/twurl
+[this crap]: https://twittercommunity.com/t/errors-message-could-not-authenticate-you-code-32/1223/13
+
+The web-hook itself...
+```bash
+Payload { id: '1064008442954706944',
+  url: 'https://no-server-november.ulfhedinn.net/imagebot',
+  valid: true,
+  created_timestamp: '2018-11-18 04:12:36 +0000' }
+```
+

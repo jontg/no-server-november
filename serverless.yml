@@ -18,6 +18,10 @@ provider:
         - dynamodb:GetItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:*"
     - Effect: Allow
+      Action:
+        - rekognition:DetectLabels
+      Resource: "*"
+    - Effect: Allow
       Action: # Credstash KMS key, for decrypting secrets (alias/credstash)
         - kms:Decrypt
         - kms:GenerateDataKey
@@ -83,3 +87,22 @@ functions:
     handler: functions/one_direction.handler
     events:
       - alexaSkill: amzn1.ask.skill.343bb68b-abc5-48e7-8507-4d7fee38c6f8
+
+# =--= Image Classifier =--------------------------------------------------------------------------=
+  image_classifier:
+    timeout: 900
+    handler: functions/imagebot.handler
+    events:
+      # The following events are only available to me, `serverless invoke local` tyvm
+      # - http: # Tell the bot to register itself for web-hooks
+      #     method: patch
+      #     path: imagebot
+      # - http: # Tell the bot to register itself for web-hooks
+      #     method: delete
+      #     path: imagebot
+      - http: # CRC Challenge/Response to enable new web-hooks
+          method: get
+          path: imagebot
+      - http: # Primary twitter event entrypoint
+          method: post
+          path: imagebot
