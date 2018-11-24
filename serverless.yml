@@ -40,9 +40,10 @@ custom:
   region:
     prod: us-west-2
   webpack:
-    includeModules: true
-    forceExclude:
-      - aws-sdk
+    includeModules:
+      forceExclude:
+        - aws-sdk
+        - twilio
   domain:
     prod: no-server-november.ulfhedinn.net
 

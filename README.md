@@ -122,3 +122,9 @@ Payload { id: '1064008442954706944',
 
 Wake me up every morning at 8am PDT (4pm UTC).  Super simple, deliciously straightforward, and now I
 have a new phone number I can text from!
+
+Interestingly enough, with this addition we see a significant increase in memory pressure, so we are
+now deploying with more memory:
+```bash
+node --max-old-space-size=12000 ./node_modules/serverless/bin/serverless deploy
+```
