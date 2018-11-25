@@ -110,7 +110,7 @@ functions:
 
 # =--= Twilio Integration =------------------------------------------------------------------------=
   twilio:
-    handler: functions/twilio.handler
+    handler: functions/twilio_wakeup.handler
     events:
       - cron(0 16 ? ? ? ?)
 

@@ -3,7 +3,7 @@ import * as Twilio from 'twilio';
 
 const credstash = new Credstash({ awsOpts: { region: process.env.AWS_DEFAULT_REGION } });
 
-export const handler = async (event, context, cb) => {
+export const handler = async (event, context) => {
   console.log('Event', event);
 
   const sid = await credstash.getSecret({ name: 'TWILIO_REMIND_ME_ACCOUNT_SID' });
@@ -13,9 +13,7 @@ export const handler = async (event, context, cb) => {
 
   const client = Twilio(sid, token);
 
-  await client.messages
+  return await client.messages
       .create({ from: number, body: 'Wake Up!', to: targetNumber })
       .then(message => console.log(message.sid))
-
-  return {};
 }
