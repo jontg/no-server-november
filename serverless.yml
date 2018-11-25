@@ -3,7 +3,7 @@ provider:
   name: aws
   deploymentBucket:
     name: com.ulfhedinn.${self:custom.region.${self:custom.stage}}.deploys
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   cfLogs: true
   logRetentionInDays: 90
   region: ${self:custom.region.${self:custom.stage}}
@@ -40,6 +40,10 @@ custom:
     prod: us-west-2
   domain:
     prod: no-server-november.ulfhedinn.net
+  webpack:
+    includeModules:
+      forceExclude:
+        - aws-sdk
 
 # resources: ${file(resources.yml)}
 
@@ -108,3 +112,11 @@ functions:
     events:
       - cron(0 16 ? ? ? ?)
 
+
+# =--= Slack Integration =-------------------------------------------------------------------------=
+  actionbot:
+    handler: functions/actionbot.handler
+    events:
+      - http:
+          method: post
+          path: actionbot
