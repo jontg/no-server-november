@@ -28,7 +28,6 @@ provider:
       Resource: "arn:aws:kms:${self:provider.region}:*:key/b7754a99-7b1a-4b65-adda-7b4f8416836b"
 
 package:
-  individually: true
   exclude:
     - github-check.private-key.pem.ts
 
@@ -39,11 +38,6 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   region:
     prod: us-west-2
-  webpack:
-    includeModules:
-      forceExclude:
-        - aws-sdk
-        - twilio
   domain:
     prod: no-server-november.ulfhedinn.net
 
@@ -91,7 +85,7 @@ functions:
 
 # =--= Image Classifier =--------------------------------------------------------------------------=
   image_classifier:
-    timeout: 900
+    timeout: 30
     handler: functions/imagebot.handler
     events:
       # The following events are only available to me, `serverless invoke local` tyvm
@@ -109,7 +103,7 @@ functions:
           path: imagebot
 
 # =--= Twilio Integration =------------------------------------------------------------------------=
-  twilio:
+  twilio_wakeup:
     handler: functions/twilio_wakeup.handler
     events:
       - cron(0 16 ? ? ? ?)

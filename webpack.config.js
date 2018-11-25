@@ -10,12 +10,13 @@ module.exports = {
     rules: [
       {
         test: /\.ts(x?)$/,
+        exclude: /node_modules/,
         use: [ { loader: 'ts-loader' } ]
       }
     ]
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts']
   },
   externals: [nodeExternals()],
   output: {
