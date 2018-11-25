@@ -1,21 +1,21 @@
 {
-  "name": "@ulfhedinn/strava-zombies-sync",
+  "name": "@ulfhedinn/no-server-november",
   "version": "1.0.0",
-  "description": "Serverless Application to sync Strava and Zombies, Run!",
+  "description": "Serverless Home for #noServerNovember Challenges",
   "main": "index.js",
   "scripts": {
     "test": "tape"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/jontg/strava-zombies-sync.git"
+    "url": "git+ssh://git@github.com/jontg/no-server-november.git"
   },
   "author": "Jón Tómas Grétarsson <jon.gretarsson@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jontg/strava-zombies-sync/issues"
+    "url": "https://github.com/jontg/no-server-november/issues"
   },
-  "homepage": "https://github.com/jontg/strava-zombies-sync#readme",
+  "homepage": "https://github.com/jontg/no-server-november#readme",
   "dependencies": {
     "bluebird": "^3.5.2",
     "dadjokes-wrapper": "^0.1.4",
