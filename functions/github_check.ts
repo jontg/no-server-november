@@ -9,6 +9,7 @@ const github_app_id = "20599";
 const jira_check = /[A-Z]{2,}-[0-9]+:/g;
 
 export const handler = async (event, context, cb) => {
+  const started_at = new Date();
   const app = createApp({
     id: github_app_id,
     cert: Buffer.from(github_private_key),
@@ -43,6 +44,7 @@ export const handler = async (event, context, cb) => {
   await integration.checks.update({
     check_run_id, owner, repo,
     status: 'in_progress',
+    started_at: started_at.toISOString(),
   });
 
   if ( message.match(jira_check) ) {
@@ -51,6 +53,7 @@ export const handler = async (event, context, cb) => {
       check_run_id, owner, repo,
       status: 'completed',
       conclusion: 'success',
+      started_at: started_at.toISOString(),
       completed_at: new Date().toISOString(),
     });
 
@@ -60,6 +63,7 @@ export const handler = async (event, context, cb) => {
       check_run_id, owner, repo,
       status: 'completed',
       conclusion: 'failure',
+      started_at: started_at.toISOString(),
       completed_at: new Date().toISOString(),
     });
   }
